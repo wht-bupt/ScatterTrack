@@ -1,0 +1,117 @@
+DATA:
+    DET_ROOT: 'data/det_results/dets'
+    GT_ROOT: 'data/gts'
+    BG_ROOT: 'data/bg'
+    VIDEO_ROOT: 'data/videos'
+    IMG_ROOT: 'data/imgs'
+    IMG_NOISE_ROOT: 'data/imgs_noise'
+
+LOAD:
+    DEV: 'cuda:0'
+    MODEL: 'None'             
+
+PARAM:
+    SEED: 42
+    MAX_TRACK: 3000                   # 训练时的最大轨迹数
+    MAX_MAIN_TRACK: 50
+    SCATTER_PERIOD: 10
+    # DET_SCORE_THR: 0                  # 可接受的最小检测置信度
+    TRACK_REWIND: 15                  # 构造跟踪轨迹的最大回溯帧数
+    MAX_LEN: 520                     # 查找表的最大长度
+    EMPTY_NUM: 10                     # 空位置查找表的长度
+    BATCH_SIZE: 8
+    WORKERS: 0
+    MAX_TGT: 100                      # 单帧最大跟踪目标数
+    MAX_DET: 100                      # 单帧最大检测数
+
+EXTRACT:
+    DIM: 128                          # 特征提取（查找表）的维度
+    DROP: 0.05                         # 特征提取（降维）的dropout概率
+    INIT: 'position'                  # 初始化模式，可选项：random 或 position
+    START: -30.0
+    POS_STEP: 0.1
+    EMB_STEP: 0.01
+    SUP_VAL: -50.0
+    ADD_RATE: 1
+
+GAT:
+    HEADS: 1                          # GAT模块的注意力头数量
+    DIM: [128, 128, 128]              # GAT模块的中间计算维度
+    DROP: 0.6                         # GAT模块的dropout概率
+    NUM: 1                            # GAT模块的堆叠个数
+    ASSO_NUM: 1
+    GAT_W: 0.01
+    DET_W: 0
+    ORG_W: 1
+
+GCN:
+    LEAK: 0.2
+
+TF:
+    HEADS: 2
+    INPUT_DIM: 128
+    FFN_DIM: 512
+    DROP: 0.1
+    ENCODER_NUM: 6
+    DECODER_NUM: 2
+    TF_RATE: 1
+
+GT_ASSO:
+    MAX_DIST: 5
+
+ASSO:
+    NET_DIM: [128, 512, 128]
+    MAX_DIST: 40
+
+DET:
+    BINARY_THR: 75
+    AREA_THR: 0
+    SAVE_DIR: 'data/det_results'
+    LOGS_SAVE_DIR: 'data/det_results/logs'
+    DET_SAVE_DIR: 'data/det_results/dets'
+    FULL_DET_SAVE_DIR: 'data/det_results/full_dets'
+    MIN_DIST: 3
+
+TRAIN:
+    EPOCH: 150
+    CKPT: [50, 100, 150]
+    SAVE_DIR: 'train_results'
+    LR: 0.003
+    MILESTONE: [300, 600, 1000]
+    GAMMA: 0.4
+    TRAIN_SET_RATIO: 0.5
+    A_LOSS: 1
+    G_LOSS: 0.1
+
+
+OUT:
+    REP_INT: 20
+
+TRACK:
+    MODEL: 'best_loss.pth'   
+    DEV: 'cuda:0'
+    DET_ROOT: 'data/det_results/dets'
+    IMG_ROOT: 'data/imgs'
+    SEED: 42
+    CONFIRM_AGE: 5
+    SCATTER_AGE: 5
+    MAX_AGE: 5
+    MAX_DIST: 20
+    MAX_GAP: 3
+    PRINT_REMAIN: 0
+    DEL_AGE: 5
+    NEED_HIT: False
+    ASSO_MAX_COST: 0.999
+    GROUP_MAX_COST: 0.999
+    PRINT_INT: 500
+    SAVE_DIR: 'track_results'
+    SUP_WIDTH: 3
+
+KF:
+    P_GAIN: 1000
+    Q_GAIN: 0.001
+
+SDA:
+    JUDGE_LEN: 25
+    MAX_DIST: 5
+    SUCCESS_FRAME: 35
