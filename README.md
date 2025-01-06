@@ -13,7 +13,7 @@ In deep space environment, some objects may split into several small fragments d
 
 
 <div align="center">
-<img src="assets/demo.gif" />
+<img src="assets/demo.gif" width='300' height='300'/>
 </div>
 
 
